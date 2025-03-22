@@ -5,6 +5,8 @@ import "codemirror/theme/dracula.css";
 import "codemirror/mode/javascript/javascript";
 import "codemirror/addon/edit/closetag";
 import "codemirror/addon/edit/closebrackets";
+import "codemirror/addon/lint/lint";
+import "codemirror/addon/lint/javascript-lint";
 import ACTIONS from "../Actions";
 
 const Editor = ({ socketRef, roomId, onCodeChange }) => {
@@ -20,6 +22,16 @@ const Editor = ({ socketRef, roomId, onCodeChange }) => {
           autoCloseTags: true,
           autoCloseBrackets: true,
           lineNumbers: true,
+          gutters: ["CodeMirror-lint-markers"],
+          lint: {
+            esversion: 11,
+            asi: true,
+            laxbreak: true,
+            laxcomma: true,
+            undef: true,
+            unused: true,
+            maxerr: 100,
+          }
         }
       );
 

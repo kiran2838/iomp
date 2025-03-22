@@ -12,7 +12,17 @@ app.use(express.static("build"));
 app.use((req, res, next) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
-
+app.post("/execute", async (req, res) => {
+  try {
+    const response = await axios.post(
+      "https://api.jdoodle.com/v1/execute",
+      req.body
+    );
+    res.json(response.data);
+  } catch (error) {
+    res.status(error.response.status).json(error.response.data);
+  }
+});
 const userSocketMap = {};
 
 function getAllConnectedClients(roomId) {
@@ -70,3 +80,5 @@ io.on("connection", (socket) => {
 const PORT = process.env.PORT || 5001;
 
 server.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+
+
